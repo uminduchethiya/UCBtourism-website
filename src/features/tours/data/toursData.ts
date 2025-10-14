@@ -1,0 +1,178 @@
+// src/features/tours/data/toursData.ts
+
+export interface Tour {
+    id: number;
+    image: string;
+    title: string;
+    duration: string;
+    location: string;
+    price: number;
+    reviews: number;
+    rating: number;
+    safety: string;
+    cancellation: string;
+    category: string;
+  }
+  
+  export const toursData: Tour[] = [
+    {
+      id: 1,
+      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      title: "Leeds Castle, Cliffs Of Dover",
+      duration: "6+ Hours",
+      location: "Croatia",
+      price: 200,
+      reviews: 200,
+      rating: 5,
+      safety: "Taking Safety Measures",
+      cancellation: "Free cancellation",
+      category: "Heritage Tours",
+    },
+    {
+      id: 2,
+      image: "https://images.unsplash.com/photo-1530789253388-582c481c54b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      title: "Adriatic Adventure- Zagreb To Athens",
+      duration: "8+ Hours",
+      location: "Greece",
+      price: 250,
+      reviews: 180,
+      rating: 5,
+      safety: "Taking Safety Measures",
+      cancellation: "Free cancellation",
+      category: "Classical Tours",
+    },
+    {
+      id: 3,
+      image: "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      title: "The Spanish Riviera Cost Bay",
+      duration: "5+ Hours",
+      location: "Spain",
+      price: 180,
+      reviews: 150,
+      rating: 5,
+      safety: "Taking Safety Measures",
+      cancellation: "Free cancellation",
+      category: "Heritage Tours",
+    },
+    {
+      id: 4,
+      image: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      title: "Paris City Lights Tour",
+      duration: "4+ Hours",
+      location: "France",
+      price: 220,
+      reviews: 320,
+      rating: 5,
+      safety: "Taking Safety Measures",
+      cancellation: "Free cancellation",
+      category: "Classical Tours",
+    },
+    {
+      id: 5,
+      image: "https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      title: "Sigiriya Rock Fortress Adventure",
+      duration: "7+ Hours",
+      location: "Sri Lanka",
+      price: 95,
+      reviews: 280,
+      rating: 5,
+      safety: "Taking Safety Measures",
+      cancellation: "Free cancellation",
+      category: "Heritage Tours",
+    },
+    {
+      id: 6,
+      image: "https://images.unsplash.com/photo-1548013146-72ede4b6ccd4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      title: "Temple City Tours - Colombo & Kandy",
+      duration: "6+ Hours",
+      location: "Sri Lanka",
+      price: 75,
+      reviews: 320,
+      rating: 5,
+      safety: "Taking Safety Measures",
+      cancellation: "Free cancellation",
+      category: "Religious Tours",
+    },
+    {
+      id: 7,
+      image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      title: "Safari Wildlife Expedition",
+      duration: "8+ Hours",
+      location: "Kenya",
+      price: 320,
+      reviews: 150,
+      rating: 5,
+      safety: "Taking Safety Measures",
+      cancellation: "Free cancellation",
+      category: "Wild Life Tours",
+    },
+    {
+      id: 8,
+      image: "https://images.unsplash.com/photo-1479193267923-88226319979d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      title: "Tropical Beach Escape",
+      duration: "5+ Hours",
+      location: "Maldives",
+      price: 280,
+      reviews: 220,
+      rating: 5,
+      safety: "Taking Safety Measures",
+      cancellation: "Free cancellation",
+      category: "Beach Holidays",
+    },
+    {
+      id: 9,
+      image: "https://images.unsplash.com/photo-1503803992566-48cf313e8d8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      title: "Mountain Peak Adventure",
+      duration: "9+ Hours",
+      location: "Switzerland",
+      price: 350,
+      reviews: 200,
+      rating: 5,
+      safety: "Taking Safety Measures",
+      cancellation: "Free cancellation",
+      category: "Luxury Tours",
+    },
+    {
+      id: 10,
+      image: "https://images.unsplash.com/photo-1511316695145-4992006ffddb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      title: "Wellness Retreat Experience",
+      duration: "5+ Hours",
+      location: "Bali",
+      price: 150,
+      reviews: 280,
+      rating: 5,
+      safety: "Taking Safety Measures",
+      cancellation: "Free cancellation",
+      category: "Ayurveda Wellness Tours",
+    },
+    {
+      id: 11,
+      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      title: "Religious Sacred Journey",
+      duration: "7+ Hours",
+      location: "India",
+      price: 120,
+      reviews: 190,
+      rating: 5,
+      safety: "Taking Safety Measures",
+      cancellation: "Free cancellation",
+      category: "Religious Tours",
+    },
+    {
+      id: 12,
+      image: "https://images.unsplash.com/photo-1520763185298-1b434c919eba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      title: "Honeymoon Paradise Package",
+      duration: "10+ Hours",
+      location: "Fiji",
+      price: 450,
+      reviews: 250,
+      rating: 5,
+      safety: "Taking Safety Measures",
+      cancellation: "Free cancellation",
+      category: "Honymoon Tours",
+    },
+  ];
+  
+  export const getTourById = (id: number): Tour | undefined => {
+    return toursData.find(tour => tour.id === id);
+  };
