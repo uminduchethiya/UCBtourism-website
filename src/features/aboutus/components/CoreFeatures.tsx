@@ -22,42 +22,41 @@ export default function CoreFeatures() {
     {
       id: 1,
       icon: Flag,
-      title: "Tell Us What You Want To Do",
-      description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
-      reviews: "100+ Reviews",
+      title: "Tell us how you want to travel",
+      description: "Choose a ready-made Sri Lanka package or send dates for a custom private itinerary.",
+      reviews: "Private tours only",
     },
     {
       id: 2,
       icon: MapPin,
-      title: "Share Your Travel Locations",
-      description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
-      reviews: "100+ Reviews",
+      title: "Pick your destinations",
+      description: "Sigiriya, Kandy, Ella, Yala, Galle, Mirissa, the east coast — or a full island circuit.",
+      reviews: "12 key destinations",
     },
     {
       id: 3,
       icon: Compass,
-      title: "Share Your Travel Preference",
-      description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
-      reviews: "100+ Reviews",
+      title: "Travel with a local driver",
+      description: "Airport transfers, day tours and multi-day journeys in a clean air-conditioned car or van.",
+      reviews: "Licensed drivers",
     },
     {
       id: 4,
       icon: Leaf,
-      title: "Here 100% Trusted Tour Agency",
-      description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
-      reviews: "100+ Reviews",
+      title: "A trusted island host",
+      description: "Clear communication, honest timing and support on WhatsApp before and during your trip.",
+      reviews: "Based in Sri Lanka",
     },
   ];
 
   return (
-    <section className="py-20 bg-grey-50">
+    <section className="py-20 bg-sand">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
-          <p className="text-secondary font-bold text-lg mb-2" style={{ fontFamily: "cursive" }}>Core Features</p>
-          <h2 className="text-5xl md:text-6xl font-bold mb-4">
-            <span className="text-gray-800" style={{ fontFamily: "cursive" }}>Find </span>
-            <span className="text-primary" style={{ fontFamily: "cursive" }}>Travel Perfection</span>
+          <p className="text-xs uppercase tracking-[0.28em] text-secondary mb-3">How we work</p>
+          <h2 className="text-4xl md:text-5xl font-display font-semibold mb-4 text-forest">
+            Find <span className="text-primary">travel perfection</span>
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
@@ -81,7 +80,7 @@ export default function CoreFeatures() {
                   {/* Icon */}
                   <div className="mb-6">
                     <div className="w-16 h-16 rounded-full flex items-center justify-center bg-gray-100">
-                      <IconComponent className="w-8 h-8 text-[#17a2b8]" />
+                      <IconComponent className="w-8 h-8 text-primary" />
                     </div>
                   </div>
 
@@ -92,7 +91,7 @@ export default function CoreFeatures() {
                   <p className="text-sm mb-6 flex-grow text-gray-600">{feature.description}</p>
 
                   {/* Reviews */}
-                  <p className="text-sm font-semibold text-[#17a2b8]">{feature.reviews}</p>
+                  <p className="text-sm font-semibold text-primary">{feature.reviews}</p>
                 </div>
               </div>
             );

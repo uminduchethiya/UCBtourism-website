@@ -1,30 +1,31 @@
-import  { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, ArrowRight, ArrowUp } from 'lucide-react';
-import  background1 from "../../../assets/carasoulbg1.jpg"
-import  background2 from "../../../assets/carasoulbg2.jpg"
-import  background3 from "../../../assets/carasoulbg3.jpg"
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import background1 from "../../../assets/carasoulbg1.jpg";
+import background2 from "../../../assets/carasoulbg2.jpg";
+import background3 from "../../../assets/carasoulbg3.jpg";
 export default function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
     {
       id: 1,
-      title: 'Natural Wonder of the world',
-      subtitle: 'Get unforgettable pleasure with us',
-      image: background1
+      title: "Discover Sri Lanka privately",
+      subtitle: "Tours, drivers and custom itineraries",
+      image: background1,
     },
     {
       id: 2,
-      title: 'Discover Hidden Paradises',
-      subtitle: 'Experience the beauty of untouched nature',
-      image: background2
+      title: "Temples, tea & wild coast",
+      subtitle: "From Sigiriya to Galle with a local driver",
+      image: background2,
     },
     {
       id: 3,
-      title: 'Adventure Awaits You',
-      subtitle: 'Create memories that last forever',
-      image: background3
-    }
+      title: "Travel at your own pace",
+      subtitle: "Ready-made packages or a tour you design",
+      image: background3,
+    },
   ];
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function HeroCarousel() {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, );
+  }, [slides.length]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -40,10 +41,6 @@ export default function HeroCarousel() {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -77,14 +74,18 @@ export default function HeroCarousel() {
                   {slide.title}
                 </h1>
                 <div className="flex flex-wrap gap-4">
-                  <button className="bg-[#17a2b8] text-white px-8 py-4 rounded-full hover:bg-[#138a9d] transition font-medium flex items-center gap-2 shadow-lg">
+                  <Link to="/tours" className="bg-primary text-white px-8 py-4 rounded-full hover:bg-[#0c5f59] transition font-medium flex items-center gap-2 shadow-lg">
                     Explore Tours
                     <ArrowRight className="w-5 h-5" />
-                  </button>
-                  <button className="bg-white bg-opacity-20 backdrop-blur-sm text-white px-8 py-4 rounded-full hover:bg-opacity-30 transition font-medium flex items-center gap-2 border-2 border-white shadow-lg">
-                    Our Services
+                  </Link>
+                  <Link
+                    to="/plan-your-tour"
+                    className="px-8 py-4 rounded-full font-medium flex items-center gap-2 shadow-lg"
+                    style={{ backgroundColor: "#c4a35a", color: "#14343a" }}
+                  >
+                    Plan Your Tour
                     <ArrowRight className="w-5 h-5" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -113,19 +114,12 @@ export default function HeroCarousel() {
             key={index}
             onClick={() => setCurrentSlide(index)}
             className={`w-3 h-3 rounded-full transition ${
-              index === currentSlide ? 'bg-[#17a2b8] w-8' : 'bg-white bg-opacity-50'
+              index === currentSlide ? "bg-primary w-8" : "bg-white bg-opacity-50"
             }`}
           />
         ))}
       </div>
 
-      {/* Scroll to Top Button */}
-      <button
-        onClick={scrollToTop}
-        className="fixed bottom-8 right-8 z-30 bg-[#17a2b8] text-white p-3 rounded-full hover:bg-[#138a9d] transition shadow-lg"
-      >
-        <ArrowUp className="w-6 h-6" />
-      </button>
     </div>
   );
 }

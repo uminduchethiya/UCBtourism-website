@@ -1,70 +1,33 @@
-import  background1 from "../../../assets/carasoulbg1.jpg"
-import  background2 from "../../../assets/carasoulbg2.jpg"
-import gallefort from "../../../assets/gallefort.jpg"
-import anduradpurya from "../../../assets/anuradapurya.jpg"
-import ambuluwawa from "../../../assets/ambuluwawa.jpg"
+import { Link } from "react-router-dom";
+import { slImages, localImages } from "../../../data/images";
+
 interface Destination {
   id: number;
-
   city: string;
+  slug: string;
   tours: number;
   image: string;
-  size: 'large' | 'small';
+  size: "large" | "small";
 }
 
 export default function TopDestinations() {
   const destinations: Destination[] = [
-    {
-      id: 1,
-      city: 'Ambuluwawa',
-      tours: 15,
-      image: ambuluwawa,
-      size: 'large'
-    },
-    {
-      id: 2,
-     
-      city: 'Galle Fort',
-      tours: 18,
-      image: gallefort,
-      size: 'small'
-    },
-    {
-      id: 3,
-     
-      city: 'Anuradapuraya',
-      tours: 21,
-      image: anduradpurya,
-      size: 'small'
-    },
-    {
-      id: 4,
-    
-      city: 'Dalada Maligawa',
-      tours: 15,
-      image: background2,
-      size: 'small'
-    },
-    {
-      id: 5,
-      city: 'Sigiriya',
-      tours: 32,
-      image: background1,
-      size: 'small'
-    }
+    { id: 1, city: "Ambuluwawa", slug: "ella", tours: 15, image: localImages.ambuluwawa, size: "large" },
+    { id: 2, city: "Galle Fort", slug: "galle", tours: 18, image: slImages.galleFort, size: "small" },
+    { id: 3, city: "Anuradhapura", slug: "anuradhapura", tours: 21, image: slImages.anuradhapura, size: "small" },
+    { id: 4, city: "Kandy", slug: "kandy", tours: 15, image: slImages.kandyTemple, size: "small" },
+    { id: 5, city: "Sigiriya", slug: "sigiriya", tours: 32, image: slImages.sigiriya, size: "small" },
   ];
 
   return (
-    <section className=" bg-gray-50">
+    <section className="bg-sand py-8">
       <div className="max-w-7xl mx-auto px-4">
 
          {/* Section Header */}
          <div className="text-center mb-16">
-          <h2
-            className="text-4xl md:text-5xl font-bold text-gray-800 mb-4"
-            style={{ fontFamily: "cursive" }}
-          >
-            Explore <span className="text-primary">Top Destinations</span> in Sri Lanka
+          <p className="text-xs uppercase tracking-[0.28em] text-secondary mb-3">The island</p>
+          <h2 className="text-4xl md:text-5xl font-display font-semibold text-forest mb-4">
+            Explore <span className="text-primary">top destinations</span> in Sri Lanka
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             From misty mountains to golden beaches — discover Sri Lanka’s most
@@ -76,7 +39,7 @@ export default function TopDestinations() {
         {/* Destinations Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Large Card - London */}
-          <div className="lg:row-span-2 relative group overflow-hidden rounded-2xl shadow-lg cursor-pointer h-[670px]">
+          <Link to={`/destinations/${destinations[0].slug}`} className="lg:row-span-2 relative group overflow-hidden rounded-2xl shadow-lg cursor-pointer h-[670px]">
             <div className="relative h-full min-h-[500px] lg:min-h-[650px]">
               <img
                 src={destinations[0].image}
@@ -92,18 +55,19 @@ export default function TopDestinations() {
                 <h3 className="text-4xl font-bold mb-4">
                   {destinations[0].city}
                 </h3>
-                <span className="inline-block bg-[#17a2b8] text-white px-4 py-2 rounded-full text-sm font-medium">
+                <span className="inline-block bg-primary text-white px-4 py-2 rounded-full text-sm font-medium">
                   {destinations[0].tours} Tours
                 </span>
               </div>
             </div>
-          </div>
+          </Link>
 
           {/* Small Cards Grid */}
           <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
             {destinations.slice(1).map((destination) => (
-              <div
+              <Link
                 key={destination.id}
+                to={`/destinations/${destination.slug}`}
                 className="relative group overflow-hidden rounded-2xl shadow-lg cursor-pointer"
               >
                 <div className="relative h-64 md:h-80">
@@ -121,14 +85,22 @@ export default function TopDestinations() {
                     <h3 className="text-2xl font-bold mb-3">
                       {destination.city}
                     </h3>
-                    <span className="inline-block bg-[#17a2b8] text-white px-3 py-1.5 rounded-full text-sm font-medium">
+                    <span className="inline-block bg-primary text-white px-3 py-1.5 rounded-full text-sm font-medium">
                       {destination.tours} Tours
                     </span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
+        </div>
+        <div className="text-center mt-10">
+          <Link
+            to="/destinations"
+            className="inline-flex items-center text-primary font-semibold hover:underline"
+          >
+            View all Sri Lanka destinations
+          </Link>
         </div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import buddisum from "../../../assets/budda.jpg"
 import  background1 from "../../../assets/carasoulbg1.jpg"
@@ -105,22 +106,22 @@ export default function ExploreSL() {
   const visibleTours = tours.slice(currentIndex, currentIndex + cardsPerView);
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-sand">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2
-            className="text-4xl md:text-5xl font-bold mb-4"
-            style={{ fontFamily: "cursive" }}
-          >
-            <span className="text-primary">Explore Sri Lanka </span>
-            <span className="text-black">Your Way</span>
+          <p className="text-xs uppercase tracking-[0.28em] text-secondary mb-3">Sri Lanka tours</p>
+          <h2 className="text-4xl md:text-5xl font-display font-semibold mb-4 text-forest">
+            Explore Sri Lanka <span className="text-primary">your way</span>
           </h2>
 
           <p className="text-gray-500 max-w-3xl mx-auto">
             Discover Sri Lanka's rich history and diversity through expertly
             curated tours.
           </p>
+          <Link to="/tours" className="inline-block mt-4 text-primary font-medium hover:underline">
+            Browse all tour packages
+          </Link>
         </div>
 
         {/* Carousel */}
@@ -176,13 +177,24 @@ export default function ExploreSL() {
                     {tour.description}
                   </p>
 
-                  <button className="mt-6 w-full bg-primary text-white py-3 rounded-lg font-medium hover:opacity-90 transition flex items-center justify-center gap-2">
+                  <Link
+                    to={`/tours?category=${encodeURIComponent(
+                      tour.title.includes("Wildlife")
+                        ? "Wildlife Tours"
+                        : tour.title.includes("Beach")
+                        ? "Beach Tours"
+                        : tour.title.includes("Heritage") || tour.title.includes("Religious") || tour.title.includes("Cultural")
+                        ? "Cultural Tours"
+                        : "Round Tours"
+                    )}`}
+                    className="mt-6 w-full bg-primary text-white py-3 rounded-lg font-medium hover:opacity-90 transition flex items-center justify-center gap-2"
+                  >
                     <span>
                       {tour.duration} / {tour.nights}
                     </span>
                     <span className="text-white/70">|</span>
                     <span>{tour.pickup}</span>
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}

@@ -137,7 +137,13 @@ const TestimonialCarousel: React.FC = () => {
                 key={testimonial.id}
                 className={`flex-shrink-0 px-4 w-full md:w-1/3`}
               >
-                <div className="bg-[#17a2b8] text-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 min-h-[400px] flex flex-col relative">
+                <div
+                  className="rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 min-h-[400px] flex flex-col relative backdrop-blur-xl"
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.18)",
+                    border: "1px solid rgba(255, 255, 255, 0.55)",
+                  }}
+                >
                   {/* Profile Section */}
                   <div className="flex items-center gap-4 mb-6">
                     <img
@@ -146,7 +152,7 @@ const TestimonialCarousel: React.FC = () => {
                       className="w-16 h-16 rounded-full object-cover ring-4 ring-white shadow-md"
                     />
                     <div className="flex-1">
-                      <h3 className="font-bold text-lg">{testimonial.name}</h3>
+                      <h3 className="font-bold text-lg text-gray-900">{testimonial.name}</h3>
                       <p className="text-[#ffc107] text-sm">
                         {testimonial.role}
                       </p>
@@ -154,7 +160,7 @@ const TestimonialCarousel: React.FC = () => {
                   </div>
 
                   {/* Testimonial Text */}
-                  <p className="text-white leading-relaxed flex-1">
+                  <p className="text-gray-800 leading-relaxed flex-1">
                     {testimonial.text}
                   </p>
 

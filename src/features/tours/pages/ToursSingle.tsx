@@ -1,547 +1,254 @@
-import { ChevronDown, ChevronUp, Star, X } from "lucide-react";
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-
-interface Tour {
-  id: number;
-  image: string;
-  title: string;
-  duration: string;
-  location: string;
-  price: number;
-  reviews: number;
-  rating: number;
-  safety: string;
-  cancellation: string;
-  category: string;
-}
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  Hotel,
+  MapPin,
+  Utensils,
+  Car,
+  X,
+} from "lucide-react";
+import { formatTourPrice, getTourById, toursData } from "../data/toursData";
+import EnquiryForm from "../../../shared/components/EnquiryForm";
+import Lightbox from "../../../shared/components/Lightbox";
+import { destinationsData } from "../../destinations/data/destinationsData";
 
 export default function ToursSingle() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [expandedDay, setExpandedDay] = useState(0);
-  const [activeTab, setActiveTab] = useState('overview');
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    message: '',
-  });
+  const tour = getTourById(Number(id));
+  const [openDay, setOpenDay] = useState(0);
+  const [openFaq, setOpenFaq] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  // Tours data - same as in ToursList
-  const tours: Tour[] = [
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      title: "Leeds Castle, Cliffs Of Dover",
-      duration: "6+ Hours",
-      location: "Croatia",
-      price: 200,
-      reviews: 200,
-      rating: 5,
-      safety: "Taking Safety Measures",
-      cancellation: "Free cancellation",
-      category: "Heritage Tours",
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1530789253388-582c481c54b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      title: "Adriatic Adventure- Zagreb To Athens",
-      duration: "8+ Hours",
-      location: "Greece",
-      price: 250,
-      reviews: 180,
-      rating: 5,
-      safety: "Taking Safety Measures",
-      cancellation: "Free cancellation",
-      category: "Classical Tours",
-    },
-    {
-      id: 3,
-      image: "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      title: "The Spanish Riviera Cost Bay",
-      duration: "5+ Hours",
-      location: "Spain",
-      price: 180,
-      reviews: 150,
-      rating: 5,
-      safety: "Taking Safety Measures",
-      cancellation: "Free cancellation",
-      category: "Heritage Tours",
-    },
-    {
-      id: 4,
-      image: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      title: "Paris City Lights Tour",
-      duration: "4+ Hours",
-      location: "France",
-      price: 220,
-      reviews: 320,
-      rating: 5,
-      safety: "Taking Safety Measures",
-      cancellation: "Free cancellation",
-      category: "Classical Tours",
-    },
-    {
-      id: 5,
-      image: "https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      title: "Sigiriya Rock Fortress Adventure",
-      duration: "7+ Hours",
-      location: "Sri Lanka",
-      price: 95,
-      reviews: 280,
-      rating: 5,
-      safety: "Taking Safety Measures",
-      cancellation: "Free cancellation",
-      category: "Heritage Tours",
-    },
-    {
-      id: 6,
-      image: "https://images.unsplash.com/photo-1548013146-72ede4b6ccd4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      title: "Temple City Tours - Colombo & Kandy",
-      duration: "6+ Hours",
-      location: "Sri Lanka",
-      price: 75,
-      reviews: 320,
-      rating: 5,
-      safety: "Taking Safety Measures",
-      cancellation: "Free cancellation",
-      category: "Religious Tours",
-    },
-    {
-      id: 7,
-      image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      title: "Safari Wildlife Expedition",
-      duration: "8+ Hours",
-      location: "Kenya",
-      price: 320,
-      reviews: 150,
-      rating: 5,
-      safety: "Taking Safety Measures",
-      cancellation: "Free cancellation",
-      category: "Wild Life Tours",
-    },
-    {
-      id: 8,
-      image: "https://images.unsplash.com/photo-1479193267923-88226319979d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      title: "Tropical Beach Escape",
-      duration: "5+ Hours",
-      location: "Maldives",
-      price: 280,
-      reviews: 220,
-      rating: 5,
-      safety: "Taking Safety Measures",
-      cancellation: "Free cancellation",
-      category: "Beach Holidays",
-    },
-    {
-      id: 9,
-      image: "https://images.unsplash.com/photo-1503803992566-48cf313e8d8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      title: "Mountain Peak Adventure",
-      duration: "9+ Hours",
-      location: "Switzerland",
-      price: 350,
-      reviews: 200,
-      rating: 5,
-      safety: "Taking Safety Measures",
-      cancellation: "Free cancellation",
-      category: "Luxury Tours",
-    },
-    {
-      id: 10,
-      image: "https://images.unsplash.com/photo-1511316695145-4992006ffddb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      title: "Wellness Retreat Experience",
-      duration: "5+ Hours",
-      location: "Bali",
-      price: 150,
-      reviews: 280,
-      rating: 5,
-      safety: "Taking Safety Measures",
-      cancellation: "Free cancellation",
-      category: "Ayurveda Wellness Tours",
-    },
-    {
-      id: 11,
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      title: "Religious Sacred Journey",
-      duration: "7+ Hours",
-      location: "India",
-      price: 120,
-      reviews: 190,
-      rating: 5,
-      safety: "Taking Safety Measures",
-      cancellation: "Free cancellation",
-      category: "Religious Tours",
-    },
-    {
-      id: 12,
-      image: "https://images.unsplash.com/photo-1520763185298-1b434c919eba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      title: "Honeymoon Paradise Package",
-      duration: "10+ Hours",
-      location: "Fiji",
-      price: 450,
-      reviews: 250,
-      rating: 5,
-      safety: "Taking Safety Measures",
-      cancellation: "Free cancellation",
-      category: "Honymoon Tours",
-    },
-  ];
-
-  // Find the tour based on the ID from URL
-  const tour = tours.find(t => t.id === Number(id));
-
-  // If tour not found, show error message
   if (!tour) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Tour Not Found</h2>
-          <p className="text-gray-600 mb-6">The tour you're looking for doesn't exist.</p>
+      <div className="min-h-[60vh] flex items-center justify-center text-center px-4">
+        <div>
+          <h2 className="text-3xl font-display font-semibold mb-3">Tour not found</h2>
           <button
-            onClick={() => navigate('/tourslist')}
-            className="bg-[#17a2b8] text-white px-6 py-3 rounded hover:bg-[#138a9d] transition"
+            onClick={() => navigate("/tours")}
+            className="bg-primary text-white px-6 py-3 rounded-full"
           >
-            Back to Tours List
+            Back to tours
           </button>
         </div>
       </div>
     );
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Message sent successfully!');
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      message: '',
-    });
-  };
-
-  const handleBack = () => {
-    navigate('/tourslist');
-  };
-
-  const itinerary = [
-    {
-      day: 1,
-      title: 'Departure - ' + tour.location,
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-    },
-    {
-      day: 2,
-      title: 'Exploration Day',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-    },
-    {
-      day: 3,
-      title: 'Final Adventure',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-    },
-  ];
-
-  const departureInclude = [
-    '1 Night Hotel',
-    '2 Night Hotel',
-    'Airport Transfer',
-    'Breakfast Included',
-  ];
-
-  const departureExclude = [
-    '5 Lunch Meal Included',
-    '5 Dinner Meal Included',
-    'Personal Expenses',
-    'Travel Insurance',
-  ];
+  const relatedDestinations = destinationsData.filter((destination) =>
+    tour.places.some((place) => place.toLowerCase() === destination.name.toLowerCase())
+  );
+  const relatedTours = toursData
+    .filter((item) => item.id !== tour.id && item.categories.some((cat) => tour.categories.includes(cat)))
+    .slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white border-b sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-800">{tour.title}</h1>
-            <button 
-              onClick={handleBack}
-              className="text-gray-600 hover:text-gray-800 p-2 hover:bg-gray-100 rounded-full transition"
-            >
-              <X className="w-6 h-6" />
-            </button>
+    <div className="bg-sand pb-16">
+      <div className="relative h-[52vh] min-h-[360px]">
+        <img src={tour.image} alt={tour.title} className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-forest/50" />
+        <div className="absolute inset-0 flex flex-col justify-end max-w-7xl mx-auto px-4 pb-12 text-white">
+          <p className="text-secondary text-sm uppercase tracking-[0.2em] mb-2">
+            {tour.categories.join(" · ")}
+          </p>
+          <h1 className="text-4xl md:text-6xl font-display font-semibold mb-4">{tour.title}</h1>
+          <div className="flex flex-wrap gap-4 text-sm text-white/90">
+            <span className="flex items-center gap-2"><Clock className="w-4 h-4" />{tour.duration}</span>
+            <span className="flex items-center gap-2"><MapPin className="w-4 h-4" />{tour.startLocation} → {tour.endLocation}</span>
+            <span className="font-semibold">{formatTourPrice(tour.price)}</span>
           </div>
         </div>
+        <button
+          onClick={() => navigate("/tours")}
+          className="absolute top-4 right-4 bg-white/90 p-2 rounded-full"
+          aria-label="Close"
+        >
+          <X className="w-5 h-5" />
+        </button>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <div className="mb-8">
-              <img
-                src={tour.image}
-                alt={tour.title}
-                className="w-full h-96 object-cover rounded-lg shadow-lg"
-              />
+      <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div className="lg:col-span-2 space-y-8">
+          <section className="bg-white rounded-3xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-2xl font-display font-semibold text-forest mb-3">Tour overview</h2>
+            <p className="text-gray-600 leading-relaxed">{tour.overview}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 text-sm">
+              <p className="flex gap-2"><Hotel className="w-4 h-4 text-primary mt-0.5" />{tour.accommodation}</p>
+              <p className="flex gap-2"><Car className="w-4 h-4 text-primary mt-0.5" />{tour.transport}</p>
+              <p className="flex gap-2"><Utensils className="w-4 h-4 text-primary mt-0.5" />{tour.meals}</p>
+              <p className="flex gap-2"><MapPin className="w-4 h-4 text-primary mt-0.5" />{tour.places.join(", ")}</p>
             </div>
+          </section>
 
-            <div className="bg-white rounded-lg mb-8 overflow-hidden shadow">
-              <div className="flex border-b overflow-x-auto">
-                {['Overview', 'Itinerary', 'Description', 'Reviews'].map((tab) => (
+          <section className="bg-white rounded-3xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-2xl font-display font-semibold text-forest mb-5">Day-by-day itinerary</h2>
+            <div className="space-y-3">
+              {tour.itinerary.map((item, index) => (
+                <div key={item.day} className="border border-gray-100 rounded-2xl overflow-hidden">
                   <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab.toLowerCase())}
-                    className={`px-6 py-3 font-semibold transition whitespace-nowrap ${
-                      activeTab === tab.toLowerCase()
-                        ? 'text-[#17a2b8] border-b-2 border-[#17a2b8]'
-                        : 'text-gray-600 hover:text-gray-800'
-                    }`}
+                    onClick={() => setOpenDay(openDay === index ? -1 : index)}
+                    className="w-full px-5 py-4 flex items-center justify-between text-left"
                   >
-                    {tab}
+                    <span className="font-semibold text-forest">
+                      Day {item.day} – {item.title}
+                    </span>
+                    {openDay === index ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                   </button>
+                  {openDay === index && (
+                    <div className="px-5 pb-5 text-gray-600 text-sm leading-relaxed">
+                      <p>{item.description}</p>
+                      {item.overnight && (
+                        <p className="mt-2 text-primary font-medium">Overnight: {item.overnight}</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="bg-white rounded-3xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-2xl font-display font-semibold text-forest mb-4">Tour highlights</h2>
+            <ul className="grid sm:grid-cols-2 gap-3">
+              {tour.highlights.map((item) => (
+                <li key={item} className="flex gap-2 text-gray-700 text-sm">
+                  <Check className="w-4 h-4 text-primary mt-0.5" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="grid md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-3xl p-6 shadow-sm">
+              <h3 className="font-display text-xl font-semibold mb-3 text-forest">Included</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                {tour.included.map((item) => (
+                  <li key={item} className="flex gap-2"><Check className="w-4 h-4 text-primary" />{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-white rounded-3xl p-6 shadow-sm">
+              <h3 className="font-display text-xl font-semibold mb-3 text-forest">Not included</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                {tour.excluded.map((item) => (
+                  <li key={item} className="flex gap-2"><X className="w-4 h-4 text-red-400" />{item}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="bg-white rounded-3xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-2xl font-display font-semibold text-forest mb-4">Gallery</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {tour.gallery.map((src, index) => (
+                <button key={src + index} onClick={() => setLightboxIndex(index)} className="overflow-hidden rounded-2xl">
+                  <img src={src} alt={`${tour.title} ${index + 1}`} className="h-36 w-full object-cover hover:scale-105 transition" />
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <section className="bg-white rounded-3xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-2xl font-display font-semibold text-forest mb-4">Route</h2>
+            <iframe
+              title={`${tour.title} map`}
+              src={`https://www.google.com/maps?q=${tour.mapQuery}&output=embed`}
+              className="w-full h-80 rounded-2xl border-0"
+              loading="lazy"
+            />
+          </section>
+
+          {relatedDestinations.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-display font-semibold text-forest mb-4">Destinations on this tour</h2>
+              <div className="flex flex-wrap gap-3">
+                {relatedDestinations.map((destination) => (
+                  <Link
+                    key={destination.slug}
+                    to={`/destinations/${destination.slug}`}
+                    className="bg-white px-4 py-2 rounded-full border border-gray-200 hover:border-primary text-sm"
+                  >
+                    {destination.name}
+                  </Link>
                 ))}
               </div>
+            </section>
+          )}
 
-              <div className="p-6">
-                {activeTab === 'overview' && (
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-800 mb-4">Description</h3>
-                      <p className="text-gray-600 leading-relaxed">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <p className="text-gray-600 text-sm">Duration</p>
-                        <p className="text-xl font-bold text-gray-800 mt-1">{tour.duration}</p>
-                      </div>
-                      <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <p className="text-gray-600 text-sm">Max Group Size</p>
-                        <p className="text-xl font-bold text-gray-800 mt-1">50 Person</p>
-                      </div>
-                      <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <p className="text-gray-600 text-sm">Age</p>
-                        <p className="text-xl font-bold text-gray-800 mt-1">2-80 Yrs</p>
-                      </div>
-                      <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <p className="text-gray-600 text-sm">Languages</p>
-                        <p className="text-xl font-bold text-gray-800 mt-1">English</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'itinerary' && (
-                  <div className="space-y-4">
-                    {itinerary.map((item, idx) => (
-                      <div key={idx} className="border rounded-lg overflow-hidden">
-                        <button
-                          onClick={() => setExpandedDay(expandedDay === idx ? -1 : idx)}
-                          className="w-full px-6 py-4 flex items-center justify-between bg-white hover:bg-gray-50 transition"
-                        >
-                          <div className="text-left">
-                            <p className="font-semibold text-gray-800">Day {item.day}: {item.title}</p>
-                          </div>
-                          {expandedDay === idx ? (
-                            <ChevronUp className="w-5 h-5 text-gray-600" />
-                          ) : (
-                            <ChevronDown className="w-5 h-5 text-gray-600" />
-                          )}
-                        </button>
-                        {expandedDay === idx && (
-                          <div className="px-6 py-4 bg-gray-50 border-t">
-                            <p className="text-gray-600">{item.description}</p>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {activeTab === 'description' && (
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-800 mb-2">What to Include</h3>
-                      <p className="text-gray-600 leading-relaxed">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-800 mb-2">Additional Notes</h3>
-                      <p className="text-gray-600 leading-relaxed">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'reviews' && (
-                  <div className="text-center py-8">
-                    <div className="flex items-center justify-center gap-1 mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                    <p className="text-xl font-bold text-gray-800 mb-2">{tour.rating} out of 5</p>
-                    <p className="text-gray-600">Based on {tour.reviews} reviews</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 mb-8 shadow">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Location: {tour.location}</h3>
-              <div className="bg-gray-200 rounded-lg h-96 flex items-center justify-center overflow-hidden">
-                <iframe
-                  src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.331572405396!2d15.873119!3d45.815011!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765d692a7ce507f%3A0x540e88920e944e0!2s${tour.location}!5e0!3m2!1sen!2shr!4v1234567890`}
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0, borderRadius: '8px' }}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title={`Map of ${tour.location}`}
-                ></iframe>
-              </div>
-            </div>
-
-            <div className="bg-white p-8 rounded-lg shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-800 mb-6">Contact Us</h3>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#17a2b8] focus:ring-1 focus:ring-[#17a2b8]"
-                  />
-                  <input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#17a2b8] focus:ring-1 focus:ring-[#17a2b8]"
-                  />
-                </div>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#17a2b8] focus:ring-1 focus:ring-[#17a2b8]"
-                />
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#17a2b8] focus:ring-1 focus:ring-[#17a2b8]"
-                />
-                <textarea
-                  name="message"
-                  placeholder="Enter a message"
-                  rows={5}
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#17a2b8] focus:ring-1 focus:ring-[#17a2b8] resize-none"
-                />
+          <section className="bg-white rounded-3xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-2xl font-display font-semibold text-forest mb-4">FAQs</h2>
+            {tour.faqs.map((faq, index) => (
+              <div key={faq.question} className="border-b border-gray-100 py-3">
                 <button
-                  type="submit"
-                  className="w-full bg-[#17a2b8] text-white font-semibold py-3 rounded-lg hover:bg-[#138a9d] transition-colors"
+                  onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
+                  className="w-full flex justify-between text-left font-medium text-forest"
                 >
-                  Send Message
+                  {faq.question}
+                  {openFaq === index ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                 </button>
-              </form>
-            </div>
-          </div>
-
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg p-6 mb-6 shadow sticky top-20">
-              <h3 className="text-lg font-bold text-gray-800 mb-4">Tour Information</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center border-b pb-2">
-                  <p className="text-gray-600 text-sm">Duration</p>
-                  <p className="text-gray-800 font-semibold">{tour.duration}</p>
-                </div>
-                <div className="flex justify-between items-center border-b pb-2">
-                  <p className="text-gray-600 text-sm">Departure Time</p>
-                  <p className="text-gray-800 font-semibold">2 Hours Before</p>
-                </div>
-                <div className="flex justify-between items-center border-b pb-2">
-                  <p className="text-gray-600 text-sm">Location</p>
-                  <p className="text-gray-800 font-semibold">{tour.location}</p>
-                </div>
-                <div className="flex justify-between items-center border-b pb-2">
-                  <p className="text-gray-600 text-sm">Price</p>
-                  <p className="text-gray-800 font-semibold">${tour.price}</p>
-                </div>
-                <div className="flex justify-between items-center">
-                  <p className="text-gray-600 text-sm">Rating</p>
-                  <div className="flex items-center gap-1">
-                    {[...Array(tour.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    ))}
-                  </div>
-                </div>
+                {openFaq === index && <p className="text-sm text-gray-600 mt-2">{faq.answer}</p>}
               </div>
-
-              <button className="w-full mt-6 bg-[#ffc107] text-gray-800 font-bold py-3 rounded-lg hover:bg-[#ffb500] transition">
-                Book Now
-              </button>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 shadow">
-              <div className="mb-6">
-                <h3 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
-                  <span className="text-[#17a2b8]">✓</span> Inclusion
-                </h3>
-                <ul className="space-y-2">
-                  {departureInclude.map((item, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-gray-700 text-sm">
-                      <span className="text-[#17a2b8] font-bold">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="border-t pt-6">
-                <h3 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
-                  <span className="text-red-500">✗</span> Exclusion
-                </h3>
-                <ul className="space-y-2">
-                  {departureExclude.map((item, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-gray-700 text-sm">
-                      <span className="text-red-500 font-bold">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
+            ))}
+          </section>
         </div>
+
+        <aside className="space-y-6">
+          <div id="book" className="bg-white rounded-3xl p-6 shadow-sm sticky top-24">
+            <p className="text-sm text-gray-500">From</p>
+            <p className="text-3xl font-display font-semibold text-forest mb-1">
+              {formatTourPrice(tour.price)}
+            </p>
+            <p className="text-sm text-gray-500 mb-5">Private tour · {tour.rating}★ ({tour.reviews} reviews)</p>
+            <EnquiryForm
+              type="tour"
+              contextTitle={tour.title}
+              contextDetails={`Tour: ${tour.title}\nDuration: ${tour.duration}\nRoute: ${tour.startLocation} to ${tour.endLocation}\nPrice: ${formatTourPrice(tour.price)}`}
+              submitLabel="Book / Enquire about this tour"
+            />
+          </div>
+        </aside>
       </div>
+
+      {relatedTours.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl font-display font-semibold text-forest mb-5">Related tours</h2>
+          <div className="grid md:grid-cols-3 gap-5">
+            {relatedTours.map((item) => (
+              <Link key={item.id} to={`/tours/${item.id}`} className="bg-white rounded-2xl overflow-hidden shadow-sm">
+                <img src={item.image} alt={item.title} className="h-40 w-full object-cover" />
+                <div className="p-4">
+                  <h3 className="font-semibold text-forest">{item.title}</h3>
+                  <p className="text-sm text-gray-500">{item.duration}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {lightboxIndex !== null && (
+        <Lightbox
+          images={tour.gallery.map((src, index) => ({ src, alt: `${tour.title} ${index + 1}` }))}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onPrev={() =>
+            setLightboxIndex((current) =>
+              current === null ? 0 : (current - 1 + tour.gallery.length) % tour.gallery.length
+            )
+          }
+          onNext={() =>
+            setLightboxIndex((current) =>
+              current === null ? 0 : (current + 1) % tour.gallery.length
+            )
+          }
+        />
+      )}
     </div>
   );
 }

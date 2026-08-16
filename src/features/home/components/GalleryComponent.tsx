@@ -1,175 +1,73 @@
 import { useState } from "react";
-import { X, ZoomIn } from "lucide-react";
-import  background1 from "../../../assets/carasoulbg1.jpg"
-import  background2 from "../../../assets/carasoulbg2.jpg"
-import  background3 from "../../../assets/carasoulbg3.jpg"
-import gallefort from "../../../assets/gallefort.jpg"
-import anduradpurya from "../../../assets/anuradapurya.jpg"
-import ambuluwawa from "../../../assets/ambuluwawa.jpg"
+import { Link } from "react-router-dom";
+import { ZoomIn } from "lucide-react";
+import Lightbox from "../../../shared/components/Lightbox";
+import { slImages, localImages } from "../../../data/images";
+
 const images = [
- background1,background2,background3,gallefort,anduradpurya,ambuluwawa
+  { src: slImages.sigiriya, alt: "Sigiriya Rock" },
+  { src: slImages.kandyTemple, alt: "Temple of the Tooth" },
+  { src: slImages.ellaNineArches, alt: "Nine Arches Bridge" },
+  { src: slImages.galleFort, alt: "Galle Fort" },
+  { src: slImages.teaCountry, alt: "Tea country" },
+  { src: slImages.elephants, alt: "Sri Lankan elephants" },
+  { src: slImages.mirissa, alt: "Mirissa beach" },
+  { src: localImages.beachTour, alt: "Stilt fishermen" },
 ];
 
 export default function GalleryComponent() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  const openLightbox = (url: string) => setSelectedImage(url);
-  const closeLightbox = () => setSelectedImage(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (
-    <div className="relative min-h-screen  px-4 overflow-hidden bg-gray-50 -mt-48 md:mt-0 2xl:-mt-64">
+    <section className="bg-sand px-4 py-16 md:py-24">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12 md:mb-16">
-          <p
-            className="text-secondary text-lg md:text-xl mb-2 font-cursive"
-            style={{ fontFamily: "cursive" }}
-          >
-            Make Your Tour More Pleasure
-          </p>
-          <h2
-            className="text-3xl md:text-5xl font-bold"
-            style={{ fontFamily: "cursive" }}
-          >
-            <span className="text-primary">Recent </span>
-            <span className="text-black">Gallery</span>
+        <div className="text-center mb-12">
+          <p className="text-xs uppercase tracking-[0.28em] text-secondary mb-3">From the road</p>
+          <h2 className="text-3xl md:text-5xl font-display font-semibold text-forest">
+            Recent <span className="text-primary">gallery</span>
           </h2>
+          <Link to="/gallery" className="inline-block mt-4 text-primary font-medium hover:underline">
+            View the full gallery
+          </Link>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {/* Column 1 */}
-          <div className="grid gap-4">
-            {[0, 1, 2].map((i) => (
-              <div
-                key={i}
-                className="relative group cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300"
-                onMouseEnter={() => setHoveredIndex(i)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onClick={() => openLightbox(images[i])}
-              >
-                <img
-                  src={images[i]}
-                  alt={`gallery-${i}`}
-                  className="w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-500 rounded-lg"
-                />
-                {hoveredIndex === i && (
-                  <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
-                    <ZoomIn className="w-10 h-10 text-white" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Column 2 */}
-          <div className="grid gap-4">
-            {[3, 4, 5].map((i) => (
-              <div
-                key={i}
-                className="relative group cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300"
-                onMouseEnter={() => setHoveredIndex(i)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onClick={() => openLightbox(images[i])}
-              >
-                <img
-                  src={images[i]}
-                  alt={`gallery-${i}`}
-                  className="w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-500 rounded-lg"
-                />
-                {hoveredIndex === i && (
-                  <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
-                    <ZoomIn className="w-10 h-10 text-white" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Column 3 */}
-          <div className="grid gap-4">
-            {[2, 5, 3].map((i) => (
-              <div
-                key={i + 10}
-                className="relative group cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300"
-                onMouseEnter={() => setHoveredIndex(i)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onClick={() => openLightbox(images[i])}
-              >
-                <img
-                  src={images[i]}
-                  alt={`gallery-${i}`}
-                  className="w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-500 rounded-lg"
-                />
-                {hoveredIndex === i && (
-                  <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
-                    <ZoomIn className="w-10 h-10 text-white" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Column 4 */}
-          <div className="grid gap-4">
-            {[3, 1].map((i) => (
-              <div
-                key={i + 20}
-                className="relative group cursor-pointer overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300"
-                onMouseEnter={() => setHoveredIndex(i)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onClick={() => openLightbox(images[i])}
-              >
-                <img
-                  src={images[i]}
-                  alt={`gallery-${i}`}
-                  className="w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-500 rounded-lg"
-                />
-                {hoveredIndex === i && (
-                  <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
-                    <ZoomIn className="w-10 h-10 text-white" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          {images.map((image, index) => (
+            <button
+              key={image.alt}
+              onClick={() => setLightboxIndex(index)}
+              className="relative group overflow-hidden rounded-2xl aspect-[4/5]"
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+              />
+              <span className="absolute inset-0 bg-forest/0 group-hover:bg-forest/30 transition flex items-center justify-center">
+                <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition" />
+              </span>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Lightbox Modal */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4 animate-fadeIn"
-          onClick={closeLightbox}
-        >
-          <button
-            onClick={closeLightbox}
-            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
-            aria-label="Close"
-          >
-            <X className="w-10 h-10" />
-          </button>
-          <div
-            className="max-w-5xl max-h-[90vh] relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={selectedImage}
-              alt="selected"
-              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
-            />
-          </div>
-        </div>
+      {lightboxIndex !== null && (
+        <Lightbox
+          images={images}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onPrev={() =>
+            setLightboxIndex((current) =>
+              current === null ? 0 : (current - 1 + images.length) % images.length
+            )
+          }
+          onNext={() =>
+            setLightboxIndex((current) =>
+              current === null ? 0 : (current + 1) % images.length
+            )
+          }
+        />
       )}
-
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        .animate-fadeIn { animation: fadeIn 0.3s ease-in-out; }
-      `}</style>
-    </div>
+    </section>
   );
 }
